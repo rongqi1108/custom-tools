@@ -50,4 +50,4 @@ def lrc_to_srt(file_path, keep_lyrics=True):
 
     print(f"转换完成，SRT 文件保存在: {srt_path}")
 
-lrc_to_srt('C:\\Users\\admin\\Downloads\\Lesson 1 Budget Cuts.lrc', keep_lyrics=False)
+lrc_to_srt('C:\\Users\\admin\\Downloads\\Emerald Eyes-Anson Seabra.lrc', keep_lyrics=True)

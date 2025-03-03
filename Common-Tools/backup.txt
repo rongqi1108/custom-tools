@@ -1,0 +1,64 @@
+import requests
+import json
+
+# 设置目标 URL
+url = 'https://chat.deepseek.com/api/v0/chat/completion'
+
+# 设置请求头
+headers = {
+    'authority': 'chat.deepseek.com',
+    'method': 'POST',
+    'path': '/api/v0/chat/completion',
+    'scheme': 'https',
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    'authorization': 'Bearer Vpu4Wcvo6f4q5nu9ubd/6s7e3NlrRCXWYtkEkVQD8/3dW53g9QmKQ01SVUzQjV6m',
+    'content-type': 'application/json',
+    'origin': 'https://chat.deepseek.com',
+    'referer': 'https://chat.deepseek.com/a/chat/s/7e1558e4-8bb0-4c89-88fb-c35b74f10eba',
+    'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132", "Microsoft Edge";v="132"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0',
+    'x-app-version': '20241129.1',
+    'x-client-locale': 'zh_CN',
+    'x-client-platform': 'web',
+    'x-client-version': '1.0.0-always',
+    'x-ds-pow-response': 'eyJhbGdvcml0aG0iOiJEZWVwU2Vla0hhc2hWMSIsImNoYWxsZW5nZSI6Ijc0ZGQ0OWZiN2ExNGExY2E1YTAxZTZjNWE2NThmYWU2NTU5ZDkwNjJiZTI3NGNmZjlkOGU4Mzg4MGRjMTdkNGYiLCJzYWx0IjoiMjZkZTFiMjdmYmFjNjliOGFlMjYiLCJhbnN3ZXIiOjY5Mzk0LCJzaWduYXR1cmUiOiJmOTE1NWNjMjg1NGMzMTY5YWU1YmNkOWMzYjVjMWIyOWQ3YjU0Nzg5OGY2NDUyYjJhMzcyNDQ3MTVkNjkyZTljIiwidGFyZ2V0X3BhdGgiOiIvYXBpL3YwL2NoYXQvY29tcGxldGlvbiJ9'
+}
+
+# 设置请求负载
+payload = {
+    "chat_session_id": "7e1558e4-8bb0-4c89-88fb-c35b74f10eba",
+    "parent_message_id": 2,
+    "prompt": "介绍一下你自己",
+    "ref_file_ids": [],
+    "thinking_enabled": False,
+    "search_enabled": False
+}
+
+# 发送 POST 请求
+response = requests.post(url, headers=headers, json=payload, stream=True)
+
+# 检查响应状态码
+if response.status_code == 200:
+    for line in response.iter_lines():
+        if line:
+            try:
+                # 移除前缀 'data: ' 并解析 JSON 数据
+                line = line.decode('utf-8')
+                if line.startswith('data: '):
+                    json_data = json.loads(line[6:])
+                    if 'choices' in json_data and json_data['choices']:
+                        text_content = json_data['choices'][0]['delta'].get('content', '')
+                        print(text_content, end='')
+            except json.JSONDecodeError:
+                print("")
+                # print("Invalid JSON format:", line)
+else:
+    print("Request failed with status code:", response.status_code)
+    print("Response content:", response.text)
