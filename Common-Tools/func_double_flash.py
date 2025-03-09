@@ -1,4 +1,4 @@
-def add_slash_after_single_slash(input_string):
+def double_slash(input_string):
     result = ""
     length = len(input_string)
 
@@ -13,7 +13,7 @@ def add_slash_after_single_slash(input_string):
 
 
 # 示例用法
-input_string = "path/to//file"
-output_string = add_slash_after_single_slash(input_string)
-print("Original:", input_string)
-print("Modified:", output_string)
+# input_string = "path/to//file"
+# output_string = add_slash_after_single_slash(input_string)
+# print("Original:", input_string)
+# print("Modified:", output_string)
